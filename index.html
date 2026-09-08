@@ -182,7 +182,7 @@
 
         <div class="form-group">
           <label for="kelas">Kelas *</label>
-          <input type="text" id="kelas" placeholder="Contoh: 3 Bestari" required />
+          <input type="text" id="kelas" placeholder="Contoh: 4 Bestari" required />
         </div>
 
         <div class="row">
@@ -232,14 +232,12 @@
   </div>
 
   <script>
-    // Set default date to today
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('tarikhSurat').value = today;
     document.getElementById('tarikhMula').value = today;
 
-    // Format date to DD/MM/YYYY (Malaysian style)
     function formatDate(dateStr) {
-      if (!dateStr) return '-';
+      if (!dateStr) return '';
       const [y, m, d] = dateStr.split('-');
       return `${d}/${m}/${y}`;
     }
@@ -270,104 +268,106 @@
         format: 'a4'
       });
 
-      const marginLeft = 20;
-      let y = 25;
-      const lineHeight = 7;
+      const left = 22;
+      const right = 188;
       const pageWidth = 210;
+      let y = 22;
 
-      // Title
+      // ===== TAJUK =====
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
+      doc.setFontSize(13);
       doc.text('SURAT KEBENARAN TIDAK HADIR SEKOLAH', pageWidth / 2, y, { align: 'center' });
-      y += 12;
-
-      // Date (right aligned)
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      doc.text(`Tarikh: ${data.tarikhSurat}`, pageWidth - 20, y, { align: 'right' });
-      y += 12;
-
-      // Recipient
-      doc.text('Kepada:', marginLeft, y);
-      y += lineHeight;
-      doc.text('Guru Kelas / Pengetua', marginLeft, y);
-      y += lineHeight;
-      doc.text(`Sekolah: ${data.namaSekolah}`, marginLeft, y);
-      y += 10;
-
-      // Salutation
-      doc.text('Tuan/Puan,', marginLeft, y);
-      y += 9;
-
-      // Subject
-      doc.setFont('helvetica', 'bold');
-      doc.text('Perkara: Permohonan Kebenaran Tidak Hadir Sekolah', marginLeft, y);
-      y += 10;
-
-      // Body
-      doc.setFont('helvetica', 'normal');
-      doc.text('Dengan hormatnya saya merujuk kepada perkara di atas.', marginLeft, y);
-      y += 9;
-
-      doc.text('Saya,', marginLeft, y);
-      y += lineHeight;
-      doc.text(`Nama Ibu/Bapa/Penjaga: ${data.namaIbuBapa}`, marginLeft, y);
-      y += lineHeight;
-      doc.text(`No. Telefon: ${data.noTelefon}`, marginLeft, y);
-      y += 9;
-
-      doc.text('merupakan ibu/bapa/penjaga kepada:', marginLeft, y);
-      y += lineHeight;
-      doc.text(`Nama Anak: ${data.namaAnak}`, marginLeft, y);
-      y += lineHeight;
-      doc.text(`Kelas: ${data.kelas}`, marginLeft, y);
-      y += 9;
-
-      // Absence dates
-      const dateText = data.tarikhTamat && data.tarikhTamat !== '-'
-        ? `dengan ini memaklumkan bahawa anak saya tidak dapat hadir ke sekolah pada tarikh ${data.tarikhMula} hingga ${data.tarikhTamat}.`
-        : `dengan ini memaklumkan bahawa anak saya tidak dapat hadir ke sekolah pada tarikh ${data.tarikhMula}.`;
-
-      const splitDate = doc.splitTextToSize(dateText, pageWidth - 40);
-      doc.text(splitDate, marginLeft, y);
-      y += splitDate.length * lineHeight + 4;
-
-      doc.text('atas sebab:', marginLeft, y);
-      y += lineHeight;
-
-      const splitAlasan = doc.splitTextToSize(`Alasan: ${data.alasan}`, pageWidth - 40);
-      doc.text(splitAlasan, marginLeft, y);
-      y += splitAlasan.length * lineHeight + 8;
-
-      // Closing
-      const closing = 'Saya memohon pihak sekolah untuk merekodkan ketidakhadiran ini sebagai kebenaran dan tidak dikira sebagai ponteng.';
-      const splitClosing = doc.splitTextToSize(closing, pageWidth - 40);
-      doc.text(splitClosing, marginLeft, y);
-      y += splitClosing.length * lineHeight + 6;
-
-      doc.text('Sekian, terima kasih.', marginLeft, y);
       y += 14;
 
-      // Signature
-      doc.text('Yang benar,', marginLeft, y);
-      y += 22;
+      // ===== TARIKH (kanan) =====
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.text(`Tarikh: ${data.tarikhSurat}`, right, y, { align: 'right' });
+      y += 12;
 
-      doc.text('_______________________________', marginLeft, y);
-      y += lineHeight;
-      doc.setFontSize(10);
-      doc.text('(Tandatangan Ibu/Bapa/Penjaga)', marginLeft, y);
-      y += 8;
+      // ===== PENERIMA =====
+      doc.text('Kepada:', left, y);
+      y += 6.5;
+      doc.text('Guru Kelas / Pengetua', left, y);
+      y += 6.5;
+      doc.text(`Sekolah: ${data.namaSekolah}`, left, y);
+      y += 11;
+
+      // ===== SAPAAN =====
+      doc.text('Tuan/Puan,', left, y);
+      y += 9;
+
+      // ===== PERKARA =====
+      doc.setFont('helvetica', 'bold');
+      doc.text('Perkara: Permohonan Kebenaran Tidak Hadir Sekolah', left, y);
+      y += 10;
+
+      // ===== ISI =====
+      doc.setFont('helvetica', 'normal');
+      doc.text('Dengan hormatnya saya merujuk kepada perkara di atas.', left, y);
+      y += 9;
+
+      doc.text('Saya,', left, y);
+      y += 6.5;
+      doc.text(`Nama Ibu/Bapa/Penjaga: ${data.namaIbuBapa}`, left, y);
+      y += 6.5;
+      doc.text(`No. Telefon: ${data.noTelefon}`, left, y);
+      y += 9;
+
+      doc.text('merupakan ibu/bapa/penjaga kepada:', left, y);
+      y += 6.5;
+      doc.text(`Nama Anak: ${data.namaAnak}`, left, y);
+      y += 6.5;
+      doc.text(`Kelas: ${data.kelas}`, left, y);
+      y += 10;
+
+      // Tarikh tidak hadir – format lebih kemas
+      let tarikhText = '';
+      if (data.tarikhTamat) {
+        tarikhText = `dengan ini memaklumkan bahawa anak saya tidak dapat hadir ke sekolah pada tarikh ${data.tarikhMula} hingga ${data.tarikhTamat}.`;
+      } else {
+        tarikhText = `dengan ini memaklumkan bahawa anak saya tidak dapat hadir ke sekolah pada tarikh ${data.tarikhMula}.`;
+      }
+
+      const splitTarikh = doc.splitTextToSize(tarikhText, 166);
+      doc.text(splitTarikh, left, y);
+      y += (splitTarikh.length * 6.2) + 7;
+
+      doc.text('atas sebab:', left, y);
+      y += 6.5;
+      doc.text(`Alasan: ${data.alasan}`, left, y);
+      y += 11;
+
+      // ===== PENUTUP =====
+      const closing = 'Saya memohon pihak sekolah untuk merekodkan ketidakhadiran ini sebagai kebenaran dan tidak dikira sebagai ponteng.';
+      const splitClosing = doc.splitTextToSize(closing, 166);
+      doc.text(splitClosing, left, y);
+      y += (splitClosing.length * 6.2) + 8;
+
+      doc.text('Sekian, terima kasih.', left, y);
+      y += 14;
+
+      // ===== TANDATANGAN =====
+      doc.text('Yang benar,', left, y);
+      y += 20;
+
+      doc.text('_______________________________', left, y);
+      y += 6;
+      doc.setFontSize(9);
+      doc.setTextColor(80);
+      doc.text('(Tandatangan Ibu/Bapa/Penjaga)', left, y);
+      doc.setTextColor(0);
+      y += 9;
 
       doc.setFontSize(11);
-      doc.text(`Nama: ${data.namaIbuBapa}`, marginLeft, y);
-      y += lineHeight;
-      doc.text(`Tarikh: ${data.tarikhSurat}`, marginLeft, y);
+      doc.text(`Nama: ${data.namaIbuBapa}`, left, y);
+      y += 6.5;
+      doc.text(`Tarikh: ${data.tarikhSurat}`, left, y);
 
-      // Save
+      // ===== SIMPAN =====
       const fileName = `Surat_Tidak_Hadir_${data.namaAnak.replace(/\s+/g, '_')}_${data.tarikhMula.replace(/\//g, '-')}.pdf`;
       doc.save(fileName);
 
-      // Show success message
       const msg = document.getElementById('successMsg');
       msg.style.display = 'block';
       setTimeout(() => { msg.style.display = 'none'; }, 4000);
@@ -375,7 +375,6 @@
 
     function resetForm() {
       document.getElementById('absenceForm').reset();
-      // Restore defaults
       document.getElementById('namaIbuBapa').value = 'Nurul Fahana binti Said';
       document.getElementById('noTelefon').value = '011-45895242';
       document.getElementById('namaSekolah').value = 'Sekolah Rendah Kebangsaan Kampung Selayang';
