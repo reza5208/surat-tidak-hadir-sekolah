@@ -203,17 +203,17 @@
 
         <div class="form-group">
           <label for="namaIbuBapa">Nama Ibu / Bapa / Penjaga *</label>
-          <input type="text" id="namaIbuBapa" required />
+          <input type="text" id="namaIbuBapa" value="Nurul Fahana binti Said" required />
         </div>
 
         <div class="form-group">
           <label for="noTelefon">No. Telefon *</label>
-          <input type="tel" id="noTelefon" placeholder="01X-XXXXXXX" required />
+          <input type="tel" id="noTelefon" value="011-45895242" required />
         </div>
 
         <div class="form-group">
           <label for="namaSekolah">Nama Sekolah *</label>
-          <input type="text" id="namaSekolah" required />
+          <input type="text" id="namaSekolah" value="Sekolah Rendah Kebangsaan Kampung Selayang" required />
         </div>
 
         <div class="form-group">
@@ -375,6 +375,10 @@
 
     function resetForm() {
       document.getElementById('absenceForm').reset();
+      // Restore defaults
+      document.getElementById('namaIbuBapa').value = 'Nurul Fahana binti Said';
+      document.getElementById('noTelefon').value = '011-45895242';
+      document.getElementById('namaSekolah').value = 'Sekolah Rendah Kebangsaan Kampung Selayang';
       document.getElementById('tarikhSurat').value = today;
       document.getElementById('tarikhMula').value = today;
     }
