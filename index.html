@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surat Tidak Hadir Sekolah</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1e40af;
+      --bg: #f0f4f8;
+      --card: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-top: 12px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.15);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: #64748b;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 20px;
+    }
+
+    .success-msg {
+      display: none;
+      background: #dcfce7;
+      color: #166534;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Surat Tidak Hadir Sekolah</h1>
+      <p>Isi borang → Generate PDF → Print</p>
+    </header>
+
+    <div id="successMsg" class="success-msg">
+      PDF berjaya dijana! Semak folder Download anda.
+    </div>
+
+    <div class="card">
+      <form id="absenceForm">
+        <div class="form-group">
+          <label for="namaAnak">Nama Anak *</label>
+          <select id="namaAnak" required>
+            <option value="">-- Pilih Nama Anak --</option>
+            <option value="Zahra Adawiyah">Zahra Adawiyah</option>
+            <option value="Uyun Al Dhuha">Uyun Al Dhuha</option>
+            <option value="Qaid Ukail">Qaid Ukail</option>
+            <option value="Indah Rugayyah">Indah Rugayyah</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="kelas">Kelas *</label>
+          <input type="text" id="kelas" placeholder="Contoh: 3 Bestari" required />
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="tarikhMula">Tarikh Tidak Hadir (Mula) *</label>
+            <input type="date" id="tarikhMula" required />
+          </div>
+          <div class="form-group">
+            <label for="tarikhTamat">Tarikh Tamat <small>(optional)</small></label>
+            <input type="date" id="tarikhTamat" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="alasan">Alasan *</label>
+          <textarea id="alasan" placeholder="Contoh: Demam / Sakit perut / Urusan keluarga" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="namaIbuBapa">Nama Ibu / Bapa / Penjaga *</label>
+          <input type="text" id="namaIbuBapa" required />
+        </div>
+
+        <div class="form-group">
+          <label for="noTelefon">No. Telefon *</label>
+          <input type="tel" id="noTelefon" placeholder="01X-XXXXXXX" required />
+        </div>
+
+        <div class="form-group">
+          <label for="namaSekolah">Nama Sekolah *</label>
+          <input type="text" id="namaSekolah" required />
+        </div>
+
+        <div class="form-group">
+          <label for="tarikhSurat">Tarikh Surat</label>
+          <input type="date" id="tarikhSurat" />
+        </div>
+
+        <button type="submit" class="btn">Jana PDF & Muat Turun</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Borang</button>
+      </form>
+    </div>
+
+    <footer>
+      Dibuat untuk kemudahan ibu bapa • Offline-friendly
+    </footer>
+  </div>
+
+  <script>
+    // Set default date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('tarikhSurat').value = today;
+    document.getElementById('tarikhMula').value = today;
+
+    // Format date to DD/MM/YYYY (Malaysian style)
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      const [y, m, d] = dateStr.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    document.getElementById('absenceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const data = {
+        namaAnak: document.getElementById('namaAnak').value,
+        kelas: document.getElementById('kelas').value,
+        tarikhMula: formatDate(document.getElementById('tarikhMula').value),
+        tarikhTamat: formatDate(document.getElementById('tarikhTamat').value),
+        alasan: document.getElementById('alasan').value,
+        namaIbuBapa: document.getElementById('namaIbuBapa').value,
+        noTelefon: document.getElementById('noTelefon').value,
+        namaSekolah: document.getElementById('namaSekolah').value,
+        tarikhSurat: formatDate(document.getElementById('tarikhSurat').value)
+      };
+
+      generatePDF(data);
+    });
+
+    function generatePDF(data) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const marginLeft = 20;
+      let y = 25;
+      const lineHeight = 7;
+      const pageWidth = 210;
+
+      // Title
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('SURAT KEBENARAN TIDAK HADIR SEKOLAH', pageWidth / 2, y, { align: 'center' });
+      y += 12;
+
+      // Date (right aligned)
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.text(`Tarikh: ${data.tarikhSurat}`, pageWidth - 20, y, { align: 'right' });
+      y += 12;
+
+      // Recipient
+      doc.text('Kepada:', marginLeft, y);
+      y += lineHeight;
+      doc.text('Guru Kelas / Pengetua', marginLeft, y);
+      y += lineHeight;
+      doc.text(`Sekolah: ${data.namaSekolah}`, marginLeft, y);
+      y += 10;
+
+      // Salutation
+      doc.text('Tuan/Puan,', marginLeft, y);
+      y += 9;
+
+      // Subject
+      doc.setFont('helvetica', 'bold');
+      doc.text('Perkara: Permohonan Kebenaran Tidak Hadir Sekolah', marginLeft, y);
+      y += 10;
+
+      // Body
+      doc.setFont('helvetica', 'normal');
+      doc.text('Dengan hormatnya saya merujuk kepada perkara di atas.', marginLeft, y);
+      y += 9;
+
+      doc.text('Saya,', marginLeft, y);
+      y += lineHeight;
+      doc.text(`Nama Ibu/Bapa/Penjaga: ${data.namaIbuBapa}`, marginLeft, y);
+      y += lineHeight;
+      doc.text(`No. Telefon: ${data.noTelefon}`, marginLeft, y);
+      y += 9;
+
+      doc.text('merupakan ibu/bapa/penjaga kepada:', marginLeft, y);
+      y += lineHeight;
+      doc.text(`Nama Anak: ${data.namaAnak}`, marginLeft, y);
+      y += lineHeight;
+      doc.text(`Kelas: ${data.kelas}`, marginLeft, y);
+      y += 9;
+
+      // Absence dates
+      const dateText = data.tarikhTamat && data.tarikhTamat !== '-'
+        ? `dengan ini memaklumkan bahawa anak saya tidak dapat hadir ke sekolah pada tarikh ${data.tarikhMula} hingga ${data.tarikhTamat}.`
+        : `dengan ini memaklumkan bahawa anak saya tidak dapat hadir ke sekolah pada tarikh ${data.tarikhMula}.`;
+
+      const splitDate = doc.splitTextToSize(dateText, pageWidth - 40);
+      doc.text(splitDate, marginLeft, y);
+      y += splitDate.length * lineHeight + 4;
+
+      doc.text('atas sebab:', marginLeft, y);
+      y += lineHeight;
+
+      const splitAlasan = doc.splitTextToSize(`Alasan: ${data.alasan}`, pageWidth - 40);
+      doc.text(splitAlasan, marginLeft, y);
+      y += splitAlasan.length * lineHeight + 8;
+
+      // Closing
+      const closing = 'Saya memohon pihak sekolah untuk merekodkan ketidakhadiran ini sebagai kebenaran dan tidak dikira sebagai ponteng.';
+      const splitClosing = doc.splitTextToSize(closing, pageWidth - 40);
+      doc.text(splitClosing, marginLeft, y);
+      y += splitClosing.length * lineHeight + 6;
+
+      doc.text('Sekian, terima kasih.', marginLeft, y);
+      y += 14;
+
+      // Signature
+      doc.text('Yang benar,', marginLeft, y);
+      y += 22;
+
+      doc.text('_______________________________', marginLeft, y);
+      y += lineHeight;
+      doc.setFontSize(10);
+      doc.text('(Tandatangan Ibu/Bapa/Penjaga)', marginLeft, y);
+      y += 8;
+
+      doc.setFontSize(11);
+      doc.text(`Nama: ${data.namaIbuBapa}`, marginLeft, y);
+      y += lineHeight;
+      doc.text(`Tarikh: ${data.tarikhSurat}`, marginLeft, y);
+
+      // Save
+      const fileName = `Surat_Tidak_Hadir_${data.namaAnak.replace(/\s+/g, '_')}_${data.tarikhMula.replace(/\//g, '-')}.pdf`;
+      doc.save(fileName);
+
+      // Show success message
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 4000);
+    }
+
+    function resetForm() {
+      document.getElementById('absenceForm').reset();
+      document.getElementById('tarikhSurat').value = today;
+      document.getElementById('tarikhMula').value = today;
+    }
+  </script>
+</body>
+</html>
